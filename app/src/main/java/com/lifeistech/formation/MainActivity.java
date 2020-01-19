@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private MyView myView;
     private int positionX = 0;
+    private int positionY = 0;
 
 
     @Override
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         startButton.setVisibility(View.VISIBLE);
         stopButton.setVisibility(View.GONE);
         myView = findViewById(R.id.myView);
+
 
 
         seekBar = (SeekBar) findViewById(R.id.seekBar);
@@ -168,10 +170,12 @@ public class MainActivity extends AppCompatActivity {
                         //mainimage.setImageResource(images[page]);
                         //textView.setText(String.valueOf(page + 1));
                         mTimem++;
-                        if(mTimem == currentPosition + 6000){
-                            mTimerm.cancel();
-                            mTimerm = null;
+                        if(mTimem > currentPosition + 6000){
+                            stopTimer();
                         }
+                            positionX=positionX+10;
+                            positionY=positionY+5;
+                            myView.positionUpdate(positionX,positionY);//myViewに描画する
                         //if (mTime == 6) {
                             //mTime = 0;
                             //seekBar.setProgress(mTime);
@@ -191,6 +195,10 @@ public class MainActivity extends AppCompatActivity {
     }//ここまで再生ボタンを押した時に実行
 
     public void stop(View v) {
+        stopTimer();
+    }//ここまでストップボタンを押した時に実行
+
+    public void stopTimer() {
         startButton.setVisibility(View.VISIBLE);
         stopButton.setVisibility(View.GONE);
         if (mTimer != null) {
@@ -218,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
     }//ここまでメニューボタンを押した時に実行
 
     public void volume(View v) {
-        myView.positionUpdate(positionX);
+
     }//ここまで音量ボタンを押した時に実行
 
     public boolean onTouchEvent(MotionEvent event) {
