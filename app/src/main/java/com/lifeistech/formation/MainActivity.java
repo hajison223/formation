@@ -96,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
     public void next(View v) {
         if (page < maxCount) {
             page = page + 1;
-            mainimage.setImageResource(images[page]);
+            //mainimage.setImageResource(images[page]);
             seekBar.setProgress(page);
             textView.setText(String.valueOf(page + 1));
 //            page = page + 1;
             currentPosition = currentPosition + 1000;
         } else {
-            mainimage.setImageResource(images[page]);
+            //mainimage.setImageResource(images[page]);
             seekBar.setProgress(page + 1);
             textView.setText(String.valueOf(page + 1));
         }
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public void prev(View v) {
         if (page > minCount) {
             page = page - 1;
-            mainimage.setImageResource(images[page]);
+            //mainimage.setImageResource(images[page]);
             seekBar.setProgress(page);
             textView.setText(String.valueOf(page + 1));
 //            page = page - 1;
@@ -136,9 +136,15 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             seekBar.setProgress(mTime);
-                            mainimage.setImageResource(images[page]);
-                            textView.setText(String.valueOf(page + 1));
+                            //mainimage.setImageResource(images[page]);
+                            //textView.setText(String.valueOf(page + 1));
                             mTime++;
+                            if(mTime > currentPosition + 6){
+                             stopTimer();
+                            }
+                            positionX=positionX+100;
+                            positionY=positionY+50;
+                            myView.positionUpdate(positionX,positionY);//myViewに描画する
                             if (mTime == 6) {
                                 mTime = 0;
                                 seekBar.setProgress(mTime);
@@ -158,24 +164,24 @@ public class MainActivity extends AppCompatActivity {
         //mediaPlayer.seekTo(seconds);
         audioPlay();
 
-        mTimem = currentPosition;
-        mTimerm = new Timer(false);
-        mTimerm.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
+        //mTimem = currentPosition;
+        //mTimerm = new Timer(false);
+        //mTimerm.schedule(new TimerTask() {
+           // @Override
+           // public void run() {
+               // mHandler.post(new Runnable() {
+                   // @Override
+                    //public void run() {
                         //seekBar.setProgress(mTimem);
                         //mainimage.setImageResource(images[page]);
                         //textView.setText(String.valueOf(page + 1));
-                        mTimem++;
-                        if(mTimem > currentPosition + 6000){
-                            stopTimer();
-                        }
-                            positionX=positionX+10;
-                            positionY=positionY+5;
-                            myView.positionUpdate(positionX,positionY);//myViewに描画する
+                        //mTimem++;
+                        //if(mTimem > currentPosition + 6000){
+                            //stopTimer();
+                        //}
+                            //positionX=positionX+10;
+                            //positionY=positionY+5;
+                            //myView.positionUpdate(positionX,positionY);//myViewに描画する
                         //if (mTime == 6) {
                             //mTime = 0;
                             //seekBar.setProgress(mTime);
@@ -187,10 +193,10 @@ public class MainActivity extends AppCompatActivity {
                             //stopButton.setVisibility(View.GONE);
                             //audioStop();
                         //}
-                    }
-                });
-            }
-        }, 0, 100);
+   //                 }
+   //             });
+   //         }
+   //     }, 0, 100);
         //seconds = mediaPlayer.getDuration();
     }//ここまで再生ボタンを押した時に実行
 
@@ -230,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
     }//ここまで音量ボタンを押した時に実行
 
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d("TouchEvent", "X:" + event.getX() + ",Y:" + event.getY());
+        Log.d("TouchEvent", "x:" + event.getX() + ",y:" + event.getY());
         return true;
     }//ここまで画面をタッチした時に実行
 
