@@ -1,10 +1,12 @@
 package com.lifeistech.formation;
 
+import java.util.List;
+
 public class Dancer {
-    Position[] movePositions;
+    List<Position> movePositions;
     String name;
 
-    Dancer(Position[]movePositions,String name){
+    Dancer(List<Position> movePositions,String name){
         this.movePositions = movePositions;
         this.name = name;
     }

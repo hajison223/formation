@@ -1,10 +1,8 @@
 package com.lifeistech.formation;
 
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.Image;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Button;
 import android.content.res.AssetFileDescriptor;
 import android.widget.Toast;
 import java.io.IOException;
@@ -50,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private MyView myView;
     private int positionX = 0;
     private int positionY = 0;
+
+    private int max = 1800;
 
 
     @Override
@@ -139,13 +138,11 @@ public class MainActivity extends AppCompatActivity {
                             //mainimage.setImageResource(images[page]);
                             //textView.setText(String.valueOf(page + 1));
                             mTime++;
-                            if(mTime > currentPosition + 6){
+                            if(mTime > currentPosition + max){
                              stopTimer();
                             }
-                            positionX=positionX+100;
-                            positionY=positionY+50;
-                            myView.positionUpdate(positionX,positionY);//myViewに描画する
-                            if (mTime == 6) {
+                            myView.update(mTime);//myViewに描画する
+                            if (mTime == max) {
                                 mTime = 0;
                                 seekBar.setProgress(mTime);
                                 mTimer.cancel();
@@ -181,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                         //}
                             //positionX=positionX+10;
                             //positionY=positionY+5;
-                            //myView.positionUpdate(positionX,positionY);//myViewに描画する
+                            //myView.update(positionX,positionY);//myViewに描画する
                         //if (mTime == 6) {
                             //mTime = 0;
                             //seekBar.setProgress(mTime);
