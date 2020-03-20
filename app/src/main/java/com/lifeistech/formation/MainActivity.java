@@ -14,6 +14,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.content.res.AssetFileDescriptor;
 import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private int positionY = 0;
 
     private int maxTime;
-    List<Integer> chapterTime = new ArrayList<>(Arrays.asList(0,30000,50000,70000));
+    List<Integer> chapterTime = new ArrayList<>(Arrays.asList(0, 30000, 50000, 226325, maxTime));
 
 
     @Override
@@ -83,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         // ツマミを離したときに呼ばれる
-                        mTimem = seekBar.getProgress();
-                        audioCurrentPosition = seekBar.getProgress();
+                        mTimem = seekBar.getProgress() - 1;
+                        audioCurrentPosition = seekBar.getProgress() - 1;
                         mediaPlayer.seekTo(audioCurrentPosition);
 //                        mediaPlayer.start();
                     }
@@ -94,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
     }//ここまでが起動時一度だけ実行される---変数の初期化---
 
     public void next(View v) {
-        if(mTimerm == null) {
+        if (mTimerm == null) {
             if (chapter < maxCount) {
                 chapter = chapter + 1;
-                int time = chapterTime.get(chapter);
+                int time = chapterTime.get(chapter) - 1;
                 seekBar.setProgress(time);
                 mTimem = time;
                 textView.setText(String.valueOf(mTimem));
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     }//ここまで右ボタン押した時に実行
 
     public void prev(View v) {
-        if(mTimerm == null) {
+        if (mTimerm == null) {
             if (chapter >= minCount) {
                 if (mTimem == chapterTime.get(chapter) && chapter != minCount) {
                     chapter = chapter - 1;
@@ -172,18 +173,19 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         seekBar.setProgress(mTimem);
                         mTimem++;
-                        if(mTimem >= chapterTime.get(chapter)){
+                        if (mTimem > chapterTime.get(chapter)) {
                             chapter = chapter + 1;
-                        }else {
-                            chapter = chapter - 1;
+                        } else {
+//                            chapter = chapter - 1;
                         }
+
                         textView.setText(String.valueOf(mTimem));
 //                        if(mTimem > audioCurrentPosition + maxTime){
 //                            stopTimer();
 //                        }
-                            //positionX=positionX+10;
-                            //positionY=positionY+5;
-                            //myView.update(positionX,positionY);//myViewに描画する
+                        //positionX=positionX+10;
+                        //positionY=positionY+5;
+                        myView.update(mTimem);//myViewに描画する
                         if (mTimem == maxTime) {
                             mTimem = 0;
                             seekBar.setProgress(mTimem);
@@ -194,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                             startButton.setVisibility(View.VISIBLE);
                             stopButton.setVisibility(View.GONE);
                             audioStop();
-                        }
+                        }//このif文で再生終了後自動で元の状態に戻る
                     }
                 });
             }
@@ -209,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
 //        mTimem = seekBar.getProgress();
 //        audioCurrentPosition = seekBar.getProgress();
 //    }//ユーザー　つまみをドラッグ時
-
 
 
     public void stopTimer() {
@@ -269,13 +270,14 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.prepare();
             fileCheck = true;
             maxTime = mediaPlayer.getDuration();
+            Log.d("TAG", maxTime + "");
             seekBar.setMax(maxTime);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
 
         return fileCheck;
-    }//ここまでオーディオステップアップ
+    }//ここまでオーディオセットアップ
 
 
     private void audioPlay() {
@@ -324,8 +326,8 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer = null;
     }//ここまでオーディオストップ
 
-    public void musicSelect(View v){
-        Intent intent4 = new Intent(this,MusicSelectActivity.class);
+    public void musicSelect(View v) {
+        Intent intent4 = new Intent(this, MusicSelectActivity.class);
         startActivity(intent4);
     }//音楽選択画面へ
 
