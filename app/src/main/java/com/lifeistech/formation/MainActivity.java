@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainimage = (ImageView) findViewById(R.id.imageView);//一旦imageView
+//        mainimage = (ImageView) findViewById(R.id.imageView);//一旦imageView
 //        mainimage.setImageResource(images[chapter]);
         startButton = (ImageView) findViewById(R.id.start);
         stopButton = (ImageView) findViewById(R.id.stop);
@@ -330,6 +330,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent4 = new Intent(this, MusicSelectActivity.class);
         startActivity(intent4);
     }//音楽選択画面へ
+
+    public void startEditActivity(View v){
+        Intent intent5 = new Intent(this,EditActivity.class);
+        startActivity(intent5);
+    }//Edit画面へ
 
 
 }
