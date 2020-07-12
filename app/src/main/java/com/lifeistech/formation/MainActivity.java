@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     Timer mTimerm;
     int mTimem = 0;
     int audioCurrentPosition = 0; //
-    SeekBar seekBar;
+    SeekBar musicSeekBar;
     Handler mHandler;
     private MediaPlayer mediaPlayer;
     private MyView myView;
@@ -65,13 +65,13 @@ public class MainActivity extends AppCompatActivity {
         startButton.setVisibility(View.VISIBLE);
         stopButton.setVisibility(View.GONE);
         myView = findViewById(R.id.myView);
-        seekBar = findViewById(R.id.seekBar2);
+        musicSeekBar = findViewById(R.id.seekBar2);
 
         mHandler = new Handler();
 
         maxCount = chapterTime.size();
 
-        seekBar.setOnSeekBarChangeListener(
+        musicSeekBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
                     public void onProgressChanged(SeekBar seekBar,
                                                   int progress, boolean fromUser) {
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             if (chapter < maxCount) {
                 chapter = chapter + 1;
                 int time = chapterTime.get(chapter) - 1;
-                seekBar.setProgress(time);
+                musicSeekBar.setProgress(time);
                 mTimem = time;
                 textView.setText(String.valueOf(mTimem));
                 audioCurrentPosition = mTimem;
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     chapter = chapter - 1;
                 }
                 int time = chapterTime.get(chapter);
-                seekBar.setProgress(time);
+                musicSeekBar.setProgress(time);
                 mTimem = time;
                 textView.setText(String.valueOf(mTimem));
                 audioCurrentPosition = mTimem;
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 //                    mHandler.post(new Runnable() {
 //                        @Override
 //                        public void run() {
-//                            seekBar.setProgress(mTime);
+//                            musicSeekBar.setProgress(mTime);
 //                            //mainimage.setImageResource(images[chapter]);
 //                            //textView.setText(String.valueOf(chapter + 1));
 //                            mTime++;
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 //                            myView.update(mTime);//myViewに描画する
 //                            if (mTime == maxTime) {
 //                                mTime = 0;
-//                                seekBar.setProgress(mTime);
+//                                musicSeekBar.setProgress(mTime);
 //                                mTimer.cancel();
 //                                chapter = 0;
 //                                textView.setText(String.valueOf(chapter + 1));
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        seekBar.setProgress(mTimem);
+                        musicSeekBar.setProgress(mTimem);
                         mTimem++;
                         if (mTimem > chapterTime.get(chapter)) {
                             chapter = chapter + 1;
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                         myView.update(mTimem);//myViewに描画する
                         if (mTimem == maxTime) {
                             mTimem = 0;
-                            seekBar.setProgress(mTimem);
+                            musicSeekBar.setProgress(mTimem);
                             mTimerm.cancel();
                             chapter = 0;
                             //textView.setText(String.valueOf(chapter + 1));
@@ -207,9 +207,9 @@ public class MainActivity extends AppCompatActivity {
         stopTimer();
     }//ここまでストップボタンを押した時に実行
 
-//    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-//        mTimem = seekBar.getProgress();
-//        audioCurrentPosition = seekBar.getProgress();
+//    public void onProgressChanged(SeekBar musicSeekBar, int progress, boolean fromUser){
+//        mTimem = musicSeekBar.getProgress();
+//        audioCurrentPosition = musicSeekBar.getProgress();
 //    }//ユーザー　つまみをドラッグ時
 
 
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
             fileCheck = true;
             maxTime = mediaPlayer.getDuration();
             Log.d("TAG", maxTime + "");
-            seekBar.setMax(maxTime);
+            musicSeekBar.setMax(maxTime);
         } catch (IOException e1) {
             e1.printStackTrace();
         }

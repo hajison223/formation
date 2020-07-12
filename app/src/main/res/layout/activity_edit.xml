@@ -33,7 +33,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="12"
             android:orientation="vertical">
 
             <LinearLayout
@@ -68,23 +68,32 @@
                     android:layout_weight="1" />
 
                 <android.support.v7.widget.AppCompatSeekBar
+                    android:id="@+id/horizontalSeekBar"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="5"/>
+                    android:layout_weight="5" />
                 <!--<SeekBar-->
-                    <!--android:id="@+id/seekBar2"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_weight="5" />-->
+                <!--android:id="@+id/seekBar2"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="5" />-->
             </LinearLayout>
+
+            <Button
+                android:id="@+id/addObject"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="ADD  OBJECT  MODE" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/notObjectMode"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="5dp"
-            android:layout_weight="1"
+            android:layout_weight="9"
             android:orientation="horizontal">
 
             <ImageView
@@ -120,6 +129,12 @@
                 app:srcCompat="@drawable/nextpage" />
 
         </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/musicSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
