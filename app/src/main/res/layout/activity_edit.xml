@@ -4,21 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="1"
-        android:textColor="#F44336"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".EditActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -29,6 +15,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="saveProject"
+            android:text="save" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,11 +54,17 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <View
-                    android:id="@+id/view"
+                <TextView
+                    android:id="@+id/textView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_weight="1"
+                    android:text="1"
+                    android:textAlignment="viewEnd"
+                    android:textColor="#F44336"
+                    android:textSize="24sp" />
 
                 <android.support.v7.widget.AppCompatSeekBar
                     android:id="@+id/horizontalSeekBar"
@@ -79,12 +78,28 @@
                 <!--android:layout_weight="5" />-->
             </LinearLayout>
 
-            <Button
-                android:id="@+id/addObject"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="ADD  OBJECT  MODE" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/addObject"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="addObjectMode"
+                    android:text="ADD  OBJECT  MODE" />
+
+                <Button
+                    android:id="@+id/previewButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="previewMode"
+                    android:text="Preview  Mode" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -92,49 +107,244 @@
             android:id="@+id/notObjectMode"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="5dp"
             android:layout_weight="9"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/previmage"
+            <LinearLayout
+                android:id="@+id/linearLayoutObject"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="prev"
-                app:srcCompat="@drawable/prevpage" />
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_weight="9"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/start"
+                <ImageView
+                    android:id="@+id/previmage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="prev"
+                    app:srcCompat="@drawable/prevpage" />
+
+                <ImageView
+                    android:id="@+id/start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="start"
+                    app:srcCompat="@drawable/play" />
+
+                <ImageView
+                    android:id="@+id/stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="stop"
+                    app:srcCompat="@drawable/stop" />
+
+                <ImageView
+                    android:id="@+id/nextimage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="next"
+                    app:srcCompat="@drawable/nextpage" />
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/musicSeekBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="start"
-                app:srcCompat="@drawable/play" />
-
-            <ImageView
-                android:id="@+id/stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="stop"
-                app:srcCompat="@drawable/stop" />
-
-            <ImageView
-                android:id="@+id/nextimage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="next"
-                app:srcCompat="@drawable/nextpage" />
-
+                android:layout_height="0dp"
+                android:layout_weight="1" />
         </LinearLayout>
 
-        <SeekBar
-            android:id="@+id/musicSeekBar"
+        <LinearLayout
+            android:id="@+id/objectMode"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="9"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/addDancer"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:onClick="addDancer"
+                    android:text="ADD DANCER" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/button6"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addDancerOption"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutDancer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/editDancerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="DANCER NAME"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/editDancerColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="COLOR"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/editDancerPosition"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="POSITION"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/editName"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="DANCER NAME"
+                        android:inputType="textPersonName" />
+
+                    <EditText
+                        android:id="@+id/editColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="Name" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textViewX"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="X"
+                            android:textSize="24sp" />
+
+                        <EditText
+                            android:id="@+id/editX"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:ems="10"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/textViewY"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Y"
+                            android:textSize="24sp" />
+
+                        <EditText
+                            android:id="@+id/editY"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:ems="10"
+                            android:inputType="number" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/putDancer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:onClick="putDancer"
+                android:text="ADD" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

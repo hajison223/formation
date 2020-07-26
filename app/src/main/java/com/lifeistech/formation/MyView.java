@@ -24,32 +24,32 @@ public class MyView extends View {
     public MyView(Context context, AttributeSet attrs) {
         super(context, attrs);
         paint = new Paint();
-        List<Position> positionList = new ArrayList();
+//        List<Position> positionList = new ArrayList();
 //        List<Position> positionList2 = new ArrayList();
 //
 //
-        for (int i = 0; i < 3000; i++) {
-            positionList.add(new Position(i/10, i/10));
-        }
-        for (int i = 0; i < 2000; i++) {
-            positionList.add(new Position(300-i/10, 300-i/10));
-        }
-        for (int i = 0; i < 4000; i++) {
-            positionList.add(new Position(100+i/10, 100));
-        }
-        for (int i = 0; i < 2000; i++) {
-            positionList.add(new Position(500, 100+i/10));
-        }
-        for (int i = 0; i < 2000; i++) {
-            positionList.add(new Position(500-i/10, 300));
-        }
-        for (int i = 0; i < 200000; i++) {
-            positionList.add(new Position(300,300));
-        }// 仮で小円位置情報を生成
-
+//        for (int i = 0; i < 3000; i++) {
+//            positionList.add(new Position(i/10, i/10));
+//        }
+//        for (int i = 0; i < 2000; i++) {
+//            positionList.add(new Position(300-i/10, 300-i/10));
+//        }
+//        for (int i = 0; i < 4000; i++) {
+//            positionList.add(new Position(100+i/10, 100));
+//        }
+//        for (int i = 0; i < 2000; i++) {
+//            positionList.add(new Position(500, 100+i/10));
+//        }
+//        for (int i = 0; i < 2000; i++) {
+//            positionList.add(new Position(500-i/10, 300));
+//        }
+//        for (int i = 0; i < 200000; i++) {
+//            positionList.add(new Position(300,300));
+//        }// 仮で小円位置情報を生成
 //
-        Dancer dancer1 = new Dancer(positionList, "dancer1");
-        dancers.add(dancer1);
+////
+//        Dancer dancer1 = new Dancer(positionList, "dancer1");
+//        dancers.add(dancer1);
 //        Dancer dancer2 = new Dancer(positionList2, "dancer2");
 //        dancers.add(dancer2);
     }
@@ -81,6 +81,10 @@ public class MyView extends View {
     void update(int mTime) {
         currentTime = mTime;
         invalidate(); //onDraw()がもう一度呼ばれる
+    }
+
+    public void setDancers(List<Dancer> newDancers){
+        dancers = newDancers;
     }
 
 
