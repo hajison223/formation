@@ -472,7 +472,9 @@ public class EditActivity extends AppCompatActivity {
     public void saveProject(View v) {
         ObjectStrage.save(dancers, "project_name");
         finish();
-    }
+        Intent intent0 = new Intent(this,StartActivity.class);
+        startActivity(intent0);
+    }//プロジェクトのセーブをする
 
 
 }
