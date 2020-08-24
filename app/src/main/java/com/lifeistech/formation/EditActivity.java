@@ -29,17 +29,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class EditActivity extends AppCompatActivity {
 
-//    ImageView mainimage;
+    //    ImageView mainimage;
     ImageView startButton;
     ImageView stopButton;
     Button addObject;
     Button previewButton;
     TextView textView;
+    int minuteCounter=0;
+    int secondCounter=0;
+    int milliSecondCounter=0;
     int[] images = {
             R.drawable.volume,
             R.drawable.play,
@@ -73,7 +77,7 @@ public class EditActivity extends AppCompatActivity {
 
     String dancerName;
     int newX = 0;
-    int newY;
+    int newY = 0;
 
     Handler mHandler;
     private MediaPlayer mediaPlayer;
@@ -86,19 +90,17 @@ public class EditActivity extends AppCompatActivity {
     private List<Dancer> dancers = new ArrayList<>();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
         VerticalSeekBar verticalSeekBar
-                = (VerticalSeekBar)findViewById(R.id.verticalSeekBar);
+                = (VerticalSeekBar) findViewById(R.id.verticalSeekBar);
         //垂直シークバーをレイアウトから取得
         verticalSeekBar.setMax(100);
         verticalSeekBar.setOnSeekBarChangeListener(
-                new AppCompatSeekBar.OnSeekBarChangeListener()
-                {
+                new AppCompatSeekBar.OnSeekBarChangeListener() {
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -119,27 +121,27 @@ public class EditActivity extends AppCompatActivity {
 
         startButton = (ImageView) findViewById(R.id.start);
         stopButton = (ImageView) findViewById(R.id.stop);
-        addObject = (Button)findViewById(R.id.addObject);
-        previewButton = (Button)findViewById(R.id.previewButton);
-        addDancer = (Button)findViewById(R.id.addDancer);
-        notObjectMode = (LinearLayout)this.findViewById(R.id.notObjectMode);
-        objectMode = (LinearLayout)this.findViewById(R.id.objectMode);
-        addDancerOption = (LinearLayout)this.findViewById(R.id.addDancerOption);
+        addObject = (Button) findViewById(R.id.addObject);
+        previewButton = (Button) findViewById(R.id.previewButton);
+        addDancer = (Button) findViewById(R.id.addDancer);
+        notObjectMode = (LinearLayout) this.findViewById(R.id.notObjectMode);
+        objectMode = (LinearLayout) this.findViewById(R.id.objectMode);
+        addDancerOption = (LinearLayout) this.findViewById(R.id.addDancerOption);
         notObjectMode.setVisibility(View.VISIBLE);
         objectMode.setVisibility(View.GONE);
         addDancerOption.setVisibility(View.GONE);
 //        previewButton.setVisibility(View.GONE);
 
         editDancerName = (TextView) findViewById(R.id.editDancerName);
-        editDancerColor = (TextView)findViewById(R.id.editDancerColor);
-        editDancerPosition = (TextView)findViewById(R.id.editDancerPosition);
-        editName = (EditText)findViewById(R.id.editName);
-        editColor = (EditText)findViewById(R.id.editColor);
-        textViewX = (TextView)findViewById(R.id.textViewX);
-        textViewY = (TextView)findViewById(R.id.textViewY);
-        editX = (EditText)findViewById(R.id.editX);
-        editY = (EditText)findViewById(R.id.editY);
-        putDancer = (Button)findViewById(R.id.putDancer);
+        editDancerColor = (TextView) findViewById(R.id.editDancerColor);
+        editDancerPosition = (TextView) findViewById(R.id.editDancerPosition);
+        editName = (EditText) findViewById(R.id.editName);
+        editColor = (EditText) findViewById(R.id.editColor);
+        textViewX = (TextView) findViewById(R.id.textViewX);
+        textViewY = (TextView) findViewById(R.id.textViewY);
+        editX = (EditText) findViewById(R.id.editX);
+        editY = (EditText) findViewById(R.id.editY);
+        putDancer = (Button) findViewById(R.id.putDancer);
 
         textView = (TextView) findViewById(R.id.textView);
         startButton.setVisibility(View.VISIBLE);
@@ -169,6 +171,7 @@ public class EditActivity extends AppCompatActivity {
                         // ツマミを離したときに呼ばれる
                         mTimem = seekBar.getProgress() - 1;
                         audioCurrentPosition = seekBar.getProgress() - 1;
+                        mediaPlayer=new MediaPlayer();
                         mediaPlayer.seekTo(audioCurrentPosition);
 //                        mediaPlayer.start();
                     }
@@ -178,7 +181,7 @@ public class EditActivity extends AppCompatActivity {
         List<Dancer> tmpDancers = Arrays.asList(ObjectStrage.get("project_name", Dancer[].class));
 
         dancers.clear();
-        for(Dancer dancer: tmpDancers){
+        for (Dancer dancer : tmpDancers) {
             dancers.add(dancer);
         }
         myView.setDancers(dancers);
@@ -269,7 +272,12 @@ public class EditActivity extends AppCompatActivity {
 //                            chapter = chapter - 1;
                         }
 
-                        textView.setText(String.valueOf(mTimem));
+                        minuteCounter = (mTimem/1000)/60;
+                        secondCounter = (mTimem/1000)%60;
+                        milliSecondCounter = (mTimem%1000)/10;
+                        String jikoku = String.format(Locale.getDefault(), "%02d:%02d:%02d", minuteCounter, secondCounter,milliSecondCounter);
+                        textView.setText(jikoku);//タイマー表示
+//                        textView.setText(String.valueOf(mTimem));
 //                        if(mTimem > audioCurrentPosition + maxTime){
 //                            stopTimer();
 //                        }
@@ -416,7 +424,7 @@ public class EditActivity extends AppCompatActivity {
         mediaPlayer = null;
     }//ここまでオーディオストップ
 
-    public void addObjectMode(View v){
+    public void addObjectMode(View v) {
         notObjectMode.setVisibility(LinearLayout.GONE);
         objectMode.setVisibility(LinearLayout.VISIBLE);
         addDancerOption.setVisibility(LinearLayout.GONE);
@@ -424,7 +432,7 @@ public class EditActivity extends AppCompatActivity {
 //        previewButton.setVisibility(Button.VISIBLE);
     }//addObjectを押して画面下半分を詳細編集画面にする
 
-    public void previewMode(View v){
+    public void previewMode(View v) {
         notObjectMode.setVisibility(View.VISIBLE);
         objectMode.setVisibility(View.GONE);
         addDancerOption.setVisibility(View.GONE);
@@ -432,19 +440,21 @@ public class EditActivity extends AppCompatActivity {
 //        previewButton.setVisibility(Button.GONE);
     }//previewModeを押して画面の下半分をプレビュー画面にする
 
-    public void addDancer(View v){
+    public void addDancer(View v) {
         addDancerOption.setVisibility(LinearLayout.VISIBLE);
         objectMode.setVisibility(LinearLayout.GONE);
     }//ADD DANCERボタンを押してダンサーのオプションを開く
 
-    public void putDancer(View v){
+    public void putDancer(View v) {
         dancerName = editName.getText().toString();
         String xText = editX.getText().toString();
         int newX = Integer.parseInt(xText);
+        String yText = editY.getText().toString();
+        int newY = Integer.parseInt(yText);
 
         List<Position> positionList = new ArrayList();
         for (int i = 0; i < 3000; i++) {
-            positionList.add(new Position(newX - i/10, i/10));
+            positionList.add(new Position(newX - i / 10, newY+i / 10));
         }
         Dancer dancer1 = new Dancer(positionList, dancerName);
         dancers.add(dancer1);
@@ -459,11 +469,10 @@ public class EditActivity extends AppCompatActivity {
         startActivity(intent4);
     }//音楽選択画面へ
 
-    public void saveProject(View v){
+    public void saveProject(View v) {
         ObjectStrage.save(dancers, "project_name");
         finish();
     }
-
 
 
 }

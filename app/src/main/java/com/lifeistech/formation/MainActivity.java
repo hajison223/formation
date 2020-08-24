@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     ImageView startButton;
     ImageView stopButton;
     TextView textView;
+    int minuteCounter=0;
+    int secondCounter=0;
+    int milliSecondCounter=0;
     int[] images = {
             R.drawable.volume,
             R.drawable.play,
@@ -76,16 +80,21 @@ public class MainActivity extends AppCompatActivity {
                     public void onProgressChanged(SeekBar seekBar,
                                                   int progress, boolean fromUser) {
                         // ツマミをドラッグしたときに呼ばれる
+//                        if (fromUser) {
+//                            mediaPlayer.seekTo(progress);
+//                            musicSeekBar.setProgress(progress);
                     }
 
                     public void onStartTrackingTouch(SeekBar seekBar) {
                         // ツマミに触れたときに呼ばれる
+
                     }
 
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         // ツマミを離したときに呼ばれる
                         mTimem = seekBar.getProgress() - 1;
                         audioCurrentPosition = seekBar.getProgress() - 1;
+                        mediaPlayer= new MediaPlayer();
                         mediaPlayer.seekTo(audioCurrentPosition);
 //                        mediaPlayer.start();
                     }
@@ -179,7 +188,12 @@ public class MainActivity extends AppCompatActivity {
 //                            chapter = chapter - 1;
                         }
 
-                        textView.setText(String.valueOf(mTimem));
+                        minuteCounter = (mTimem/1000)/60;
+                        secondCounter = (mTimem/1000)%60;
+                        milliSecondCounter = (mTimem%1000)/10;
+                        String jikoku = String.format(Locale.getDefault(), "%02d:%02d:%02d", minuteCounter, secondCounter,milliSecondCounter);
+                        textView.setText(jikoku);//タイマー表示
+//                        textView.setText(String.valueOf(mTimem));
 //                        if(mTimem > audioCurrentPosition + maxTime){
 //                            stopTimer();
 //                        }
