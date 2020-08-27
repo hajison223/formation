@@ -50,11 +50,14 @@ public class ProjectManagerActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //長押しした際の処理を書いていく
                 ArrayAdapter adapter= (ArrayAdapter)listView.getAdapter();
                 String item = (String)adapter.getItem(position);
                 adapter.remove(item);
                 return false;
             }
         });
+        ObjectStrage[] objectStrages;
+        objectStrages = ObjectStrage.get(CachePref.KEY_USER_LIST, ObjectStrage[].class);
     }
 }
