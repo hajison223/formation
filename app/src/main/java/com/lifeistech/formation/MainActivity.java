@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
     ImageView startButton;
     ImageView stopButton;
     TextView textView;
-    int minuteCounter=0;
-    int secondCounter=0;
-    int milliSecondCounter=0;
+    int minuteCounter = 0;
+    int secondCounter = 0;
+    int milliSecondCounter = 0;
     int[] images = {
             R.drawable.volume,
             R.drawable.play,
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private MyView myView;
     private int positionX = 0;
     private int positionY = 0;
+    Project project;
 
     private int maxTime;
     List<Integer> chapterTime = new ArrayList<>(Arrays.asList(0, 30000, 50000, 226325, maxTime));
@@ -70,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
         stopButton.setVisibility(View.GONE);
         myView = findViewById(R.id.myView);
         musicSeekBar = findViewById(R.id.seekBar2);
+
+        Intent intent = getIntent();
+        String projectName = intent.getStringExtra("project_name"); //project1
+        project = ObjectStrage.get(projectName, Project.class);
+
+        myView.setDancers(project.dancers);
 
         mHandler = new Handler();
 
@@ -94,12 +101,13 @@ public class MainActivity extends AppCompatActivity {
                         // ツマミを離したときに呼ばれる
                         mTimem = seekBar.getProgress() - 1;
                         audioCurrentPosition = seekBar.getProgress() - 1;
-                        mediaPlayer= new MediaPlayer();
+                        mediaPlayer = new MediaPlayer();
                         mediaPlayer.seekTo(audioCurrentPosition);
 //                        mediaPlayer.start();
                     }
                 }
         );
+
 
     }//ここまでが起動時一度だけ実行される---変数の初期化---
 
@@ -188,10 +196,10 @@ public class MainActivity extends AppCompatActivity {
 //                            chapter = chapter - 1;
                         }
 
-                        minuteCounter = (mTimem/1000)/60;
-                        secondCounter = (mTimem/1000)%60;
-                        milliSecondCounter = (mTimem%1000)/10;
-                        String jikoku = String.format(Locale.getDefault(), "%02d:%02d:%02d", minuteCounter, secondCounter,milliSecondCounter);
+                        minuteCounter = (mTimem / 1000) / 60;
+                        secondCounter = (mTimem / 1000) % 60;
+                        milliSecondCounter = (mTimem % 1000) / 10;
+                        String jikoku = String.format(Locale.getDefault(), "%02d:%02d:%02d", minuteCounter, secondCounter, milliSecondCounter);
                         textView.setText(jikoku);//タイマー表示
 //                        textView.setText(String.valueOf(mTimem));
 //                        if(mTimem > audioCurrentPosition + maxTime){
@@ -345,8 +353,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent4);
     }//音楽選択画面へ
 
-    public void startEditActivity(View v){
-        Intent intent5 = new Intent(this,EditActivity.class);
+    public void startEditActivity(View v) {
+        Intent intent5 = new Intent(this, EditActivity.class);
+        intent5.putExtra("project_name", project.name);
         startActivity(intent5);
     }//Edit画面へ
 

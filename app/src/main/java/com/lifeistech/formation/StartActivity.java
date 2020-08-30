@@ -14,9 +14,9 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public void moveActivity(View v){
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this,CreateNewProjectName.class);
         startActivity(intent);
-    }//メイン画面へ
+    }//プロジェクト名登録画面へ
 
     public void projectManagerActivity(View v){
         Intent intent2 = new Intent(this,ProjectManagerActivity.class);

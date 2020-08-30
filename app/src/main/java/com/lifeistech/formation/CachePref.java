@@ -22,6 +22,6 @@ public class CachePref {
         return pref.getString(key, defaultValue);
     }
     public void put(String key, String value) {
-        editor.putString(key, value).commit();
+        editor.putString(key, value).apply();
     }
 }

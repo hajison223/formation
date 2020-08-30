@@ -41,9 +41,9 @@ public class EditActivity extends AppCompatActivity {
     Button addObject;
     Button previewButton;
     TextView textView;
-    int minuteCounter=0;
-    int secondCounter=0;
-    int milliSecondCounter=0;
+    int minuteCounter = 0;
+    int secondCounter = 0;
+    int milliSecondCounter = 0;
     int[] images = {
             R.drawable.volume,
             R.drawable.play,
@@ -88,36 +88,13 @@ public class EditActivity extends AppCompatActivity {
     private int maxTime;
     List<Integer> chapterTime = new ArrayList<>(Arrays.asList(0, 30000, 50000, 226325, maxTime));
     private List<Dancer> dancers = new ArrayList<>();
+    String projectName;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-
-        VerticalSeekBar verticalSeekBar
-                = (VerticalSeekBar) findViewById(R.id.verticalSeekBar);
-        //垂直シークバーをレイアウトから取得
-        verticalSeekBar.setMax(100);
-        verticalSeekBar.setOnSeekBarChangeListener(
-                new AppCompatSeekBar.OnSeekBarChangeListener() {
-
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        Log.i("EditActivity : ", "値 = " + progress);
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    }
-                });
-
 
         startButton = (ImageView) findViewById(R.id.start);
         stopButton = (ImageView) findViewById(R.id.stop);
@@ -171,20 +148,49 @@ public class EditActivity extends AppCompatActivity {
                         // ツマミを離したときに呼ばれる
                         mTimem = seekBar.getProgress() - 1;
                         audioCurrentPosition = seekBar.getProgress() - 1;
-                        mediaPlayer=new MediaPlayer();
+                        mediaPlayer = new MediaPlayer();
                         mediaPlayer.seekTo(audioCurrentPosition);
 //                        mediaPlayer.start();
                     }
                 }
         );
 
-        List<Dancer> tmpDancers = Arrays.asList(ObjectStrage.get("project_name", Dancer[].class));
+        VerticalSeekBar verticalSeekBar
+                = (VerticalSeekBar) findViewById(R.id.verticalSeekBar);
+        //垂直シークバーをレイアウトから取得
+        verticalSeekBar.setMax(100);
+        verticalSeekBar.setOnSeekBarChangeListener(
+                new AppCompatSeekBar.OnSeekBarChangeListener() {
 
-        dancers.clear();
-        for (Dancer dancer : tmpDancers) {
-            dancers.add(dancer);
-        }
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        Log.i("EditActivity : ", "値 = " + progress);
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
+
+
+        Intent intent = getIntent();
+        projectName = intent.getStringExtra("project_name"); //project1
+
+        Project project = ObjectStrage.get(projectName, Project.class);
+        dancers = project.dancers;
+
+//        dancers.clear();
+//        for (Dancer dancer : tmpDancers) {
+//            dancers.add(dancer);
+//        }
         myView.setDancers(dancers);
+
     }
 
     public void next(View v) {
@@ -272,10 +278,10 @@ public class EditActivity extends AppCompatActivity {
 //                            chapter = chapter - 1;
                         }
 
-                        minuteCounter = (mTimem/1000)/60;
-                        secondCounter = (mTimem/1000)%60;
-                        milliSecondCounter = (mTimem%1000)/10;
-                        String jikoku = String.format(Locale.getDefault(), "%02d:%02d:%02d", minuteCounter, secondCounter,milliSecondCounter);
+                        minuteCounter = (mTimem / 1000) / 60;
+                        secondCounter = (mTimem / 1000) % 60;
+                        milliSecondCounter = (mTimem % 1000) / 10;
+                        String jikoku = String.format(Locale.getDefault(), "%02d:%02d:%02d", minuteCounter, secondCounter, milliSecondCounter);
                         textView.setText(jikoku);//タイマー表示
 //                        textView.setText(String.valueOf(mTimem));
 //                        if(mTimem > audioCurrentPosition + maxTime){
@@ -454,7 +460,7 @@ public class EditActivity extends AppCompatActivity {
 
         List<Position> positionList = new ArrayList();
         for (int i = 0; i < 3000; i++) {
-            positionList.add(new Position(newX - i / 10, newY+i / 10));
+            positionList.add(new Position(newX - i / 10, newY + i / 10));
         }
         Dancer dancer1 = new Dancer(positionList, dancerName);
         dancers.add(dancer1);
@@ -470,11 +476,20 @@ public class EditActivity extends AppCompatActivity {
     }//音楽選択画面へ
 
     public void saveProject(View v) {
-        ObjectStrage.save(dancers, "project_name");
+//        String[] projectsNames = ObjectStrage.get("project_name_array", String[].class);
+//        for (int i = 0; i < 10; i++) {
+//            if (projectsNames[i] == projectNameEditText) {
+//                //上書き保存
+//            } else {
+//                //
+//            }
+//        }
+
+        Project project = new Project(dancers, projectName);
+        ObjectStrage.save(project, project.name);
         finish();
-        Intent intent0 = new Intent(this,StartActivity.class);
+        Intent intent0 = new Intent(this, StartActivity.class);
         startActivity(intent0);
     }//プロジェクトのセーブをする
-
 
 }
