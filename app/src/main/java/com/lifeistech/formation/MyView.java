@@ -54,7 +54,6 @@ public class MyView extends View {
 //        dancers.add(dancer2);
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         float xc = canvas.getWidth() / 2;

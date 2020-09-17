@@ -64,7 +64,7 @@
                     android:text="00:00:00"
                     android:textAlignment="viewEnd"
                     android:textColor="#F44336"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <android.support.v7.widget.AppCompatSeekBar
                     android:id="@+id/horizontalSeekBar"
@@ -90,7 +90,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:onClick="addObjectMode"
-                    android:text="ADD  OBJECT  MODE" />
+                    android:text="OBJECT  MODE" />
+
+                <Button
+                    android:id="@+id/chaptarMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="chapterMode"
+                    android:text="CHAPTER MODE" />
 
                 <Button
                     android:id="@+id/previewButton"
@@ -104,11 +112,78 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/notObjectMode"
+            android:id="@+id/chapterMode"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="9"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/setChapter"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:onClick="setCurrentChapter"
+                    android:text="NEW CHAPTER" />
+
+                <Button
+                    android:id="@+id/buttonA"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/buttonB"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/buttonC"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/buttonD"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/buttonE"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Button" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/previewMode"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/linearLayoutObject"
@@ -165,7 +240,7 @@
             android:layout_height="0dp"
             android:layout_weight="9"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -230,7 +305,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="9"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/linearLayoutDancer"

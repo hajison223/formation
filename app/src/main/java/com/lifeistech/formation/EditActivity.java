@@ -4,14 +4,10 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.support.constraint.solver.widgets.ConstraintHorizontalLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.text.Editable;
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,11 +19,10 @@ import android.widget.TextView;
 import android.content.res.AssetFileDescriptor;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -51,18 +46,19 @@ public class EditActivity extends AppCompatActivity {
             R.drawable.object,
             R.drawable.music
     };
-    int chapter = 0;
-    int maxCount;
+    int currentChapter = 0;
     int minCount = 0;
     Timer mTimerm;
     int mTimem = 0;
     int audioCurrentPosition = 0; //
     SeekBar musicSeekBar;
     SeekBar horizontalSeekBar;
-    LinearLayout notObjectMode;
+    LinearLayout previewMode;
     LinearLayout objectMode;
+    LinearLayout chapterMode;
     LinearLayout addDancerOption;
     Button addDancer;
+    Button setChapter;
 
     TextView editDancerName;
     TextView editDancerColor;
@@ -85,8 +81,9 @@ public class EditActivity extends AppCompatActivity {
     private int positionX = 0;
     private int positionY = 0;
 
-    private int maxTime;
-    List<Integer> chapterTime = new ArrayList<>(Arrays.asList(0, 30000, 50000, 226325, maxTime));
+    private int maxTime = 226325;
+    List<Integer> chapterTime = new ArrayList<>(Arrays.asList(0,maxTime, maxTime+10));
+//    List<Integer> chapterTime = new ArrayList<>(Arrays.asList(0, 70000, 80000, 226325, maxTime));
     private List<Dancer> dancers = new ArrayList<>();
     String projectName;
 
@@ -96,16 +93,21 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
+//        chapterTime.add(mTimem);
+
         startButton = (ImageView) findViewById(R.id.start);
         stopButton = (ImageView) findViewById(R.id.stop);
         addObject = (Button) findViewById(R.id.addObject);
         previewButton = (Button) findViewById(R.id.previewButton);
         addDancer = (Button) findViewById(R.id.addDancer);
-        notObjectMode = (LinearLayout) this.findViewById(R.id.notObjectMode);
+        setChapter = (Button)findViewById(R.id.setChapter);
+        previewMode = (LinearLayout) this.findViewById(R.id.previewMode);
         objectMode = (LinearLayout) this.findViewById(R.id.objectMode);
+        chapterMode = (LinearLayout)this.findViewById(R.id.chapterMode);
         addDancerOption = (LinearLayout) this.findViewById(R.id.addDancerOption);
-        notObjectMode.setVisibility(View.VISIBLE);
+        previewMode.setVisibility(View.VISIBLE);
         objectMode.setVisibility(View.GONE);
+        chapterMode.setVisibility(View.GONE);
         addDancerOption.setVisibility(View.GONE);
 //        previewButton.setVisibility(View.GONE);
 
@@ -131,8 +133,6 @@ public class EditActivity extends AppCompatActivity {
 
         mHandler = new Handler();
 
-        maxCount = chapterTime.size();
-
         musicSeekBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
                     public void onProgressChanged(SeekBar seekBar,
@@ -149,7 +149,7 @@ public class EditActivity extends AppCompatActivity {
                         mTimem = seekBar.getProgress() - 1;
                         audioCurrentPosition = seekBar.getProgress() - 1;
                         mediaPlayer = new MediaPlayer();
-                        mediaPlayer.seekTo(audioCurrentPosition);
+//                        mediaPlayer.seekTo(audioCurrentPosition);
 //                        mediaPlayer.start();
                     }
                 }
@@ -184,6 +184,7 @@ public class EditActivity extends AppCompatActivity {
 
         Project project = ObjectStrage.get(projectName, Project.class);
         dancers = project.dancers;
+        chapterTime = project.chapterTime;
 
 //        dancers.clear();
 //        for (Dancer dancer : tmpDancers) {
@@ -195,11 +196,18 @@ public class EditActivity extends AppCompatActivity {
 
     public void next(View v) {
         if (mTimerm == null) {
-            if (chapter < maxCount) {
-                chapter = chapter + 1;
-                int time = chapterTime.get(chapter) - 1;
+            if (currentChapter < chapterTime.size() -1 ) {
+                currentChapter = currentChapter + 1;
+                int time = chapterTime.get(currentChapter);
                 musicSeekBar.setProgress(time);
                 mTimem = time;
+
+//                minuteCounter = (time / 1000) / 60;
+//                secondCounter = (time / 1000) % 60;
+//                milliSecondCounter = (time % 1000) / 10;
+//                String jikoku = String.format(Locale.getDefault(), "%02d:%02d:%02d", minuteCounter, secondCounter, milliSecondCounter);
+//                textView.setText(jikoku);//タイマー表示
+
                 textView.setText(String.valueOf(mTimem));
                 audioCurrentPosition = mTimem;
             }
@@ -208,16 +216,23 @@ public class EditActivity extends AppCompatActivity {
 
     public void prev(View v) {
         if (mTimerm == null) {
-            if (chapter >= minCount) {
-                if (mTimem == chapterTime.get(chapter) && chapter != minCount) {
-                    chapter = chapter - 1;
+            if (currentChapter >= minCount) {
+                if (mTimem == chapterTime.get(currentChapter) && currentChapter != minCount) {
+                    currentChapter = currentChapter - 1;
                 }
-                int time = chapterTime.get(chapter);
+                int time = chapterTime.get(currentChapter);
                 musicSeekBar.setProgress(time);
                 mTimem = time;
+
+//                minuteCounter = (time / 1000) / 60;
+//                secondCounter = (time / 1000) % 60;
+//                milliSecondCounter = (time % 1000) / 10;
+//                String jikoku = String.format(Locale.getDefault(), "%02d:%02d:%02d", minuteCounter, secondCounter, milliSecondCounter);
+//                textView.setText(jikoku);//タイマー表示
+
                 textView.setText(String.valueOf(mTimem));
                 audioCurrentPosition = mTimem;
-//            chapter = chapter - 1;
+//            currentChapter = currentChapter - 1;
                 //audioCurrentPosition = audioCurrentPosition - 1000;
             }
         }
@@ -228,7 +243,7 @@ public class EditActivity extends AppCompatActivity {
         startButton.setVisibility(View.GONE);
         stopButton.setVisibility(View.VISIBLE);
 //        if (mTimer == null) {
-//            mTime = chapter;
+//            mTime = currentChapter;
 //            mTimer = new Timer(false);
 //            mTimer.schedule(new TimerTask() {
 //                @Override
@@ -237,8 +252,8 @@ public class EditActivity extends AppCompatActivity {
 //                        @Override
 //                        public void run() {
 //                            musicSeekBar.setProgress(mTime);
-//                            //mainimage.setImageResource(images[chapter]);
-//                            //textView.setText(String.valueOf(chapter + 1));
+//                            //mainimage.setImageResource(images[currentChapter]);
+//                            //textView.setText(String.valueOf(currentChapter + 1));
 //                            mTime++;
 //                            if(mTime > audioCurrentPosition + maxTime){
 //                             stopTimer();
@@ -248,8 +263,8 @@ public class EditActivity extends AppCompatActivity {
 //                                mTime = 0;
 //                                musicSeekBar.setProgress(mTime);
 //                                mTimer.cancel();
-//                                chapter = 0;
-//                                textView.setText(String.valueOf(chapter + 1));
+//                                currentChapter = 0;
+//                                textView.setText(String.valueOf(currentChapter + 1));
 //                                mTimer = null;
 //                                startButton.setVisibility(View.VISIBLE);
 //                                stopButton.setVisibility(View.GONE);
@@ -272,10 +287,10 @@ public class EditActivity extends AppCompatActivity {
                     public void run() {
                         musicSeekBar.setProgress(mTimem);
                         mTimem++;
-                        if (mTimem > chapterTime.get(chapter)) {
-                            chapter = chapter + 1;
+                        if (mTimem > chapterTime.get(currentChapter)) {
+                            currentChapter = currentChapter + 1;
                         } else {
-//                            chapter = chapter - 1;
+//                            currentChapter = currentChapter - 1;
                         }
 
                         minuteCounter = (mTimem / 1000) / 60;
@@ -294,8 +309,8 @@ public class EditActivity extends AppCompatActivity {
                             mTimem = 0;
                             musicSeekBar.setProgress(mTimem);
                             mTimerm.cancel();
-                            chapter = 0;
-                            //textView.setText(String.valueOf(chapter + 1));
+                            currentChapter = 0;
+                            //textView.setText(String.valueOf(currentChapter + 1));
                             mTimerm = null;
                             startButton.setVisibility(View.VISIBLE);
                             stopButton.setVisibility(View.GONE);
@@ -321,7 +336,7 @@ public class EditActivity extends AppCompatActivity {
         startButton.setVisibility(View.VISIBLE);
         stopButton.setVisibility(View.GONE);
         if (mTimerm != null) {
-            //mTimem = chapter;
+            //mTimem = currentChapter;
             mTimerm.cancel();
             mTimerm = null;
         }
@@ -334,7 +349,7 @@ public class EditActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (mTimerm != null) {
-            mTimem = chapter;
+            mTimem = currentChapter;
             mTimerm.cancel();
             mTimerm = null;
         }
@@ -431,24 +446,41 @@ public class EditActivity extends AppCompatActivity {
     }//ここまでオーディオストップ
 
     public void addObjectMode(View v) {
-        notObjectMode.setVisibility(LinearLayout.GONE);
+        previewMode.setVisibility(LinearLayout.GONE);
         objectMode.setVisibility(LinearLayout.VISIBLE);
+        chapterMode.setVisibility(View.GONE);
         addDancerOption.setVisibility(LinearLayout.GONE);
 //        addObject.setVisibility(Button.GONE);
 //        previewButton.setVisibility(Button.VISIBLE);
     }//addObjectを押して画面下半分を詳細編集画面にする
 
-    public void previewMode(View v) {
-        notObjectMode.setVisibility(View.VISIBLE);
+    public void chapterMode(View v){
+        previewMode.setVisibility(View.GONE);
         objectMode.setVisibility(View.GONE);
+        chapterMode.setVisibility(View.VISIBLE);
+        addDancerOption.setVisibility(View.GONE);
+    }//チャプターモードを押して画面下半分をチャプター編集画面にする
+
+    public void setCurrentChapter(View v){
+        chapterTime.add(mTimem);
+        Collections.sort(chapterTime);
+        currentChapter = currentChapter + 1;
+    }//新規チャプターを押してチャプターを現在位置に追加する
+
+    public void previewMode(View v) {
+        previewMode.setVisibility(View.VISIBLE);
+        objectMode.setVisibility(View.GONE);
+        chapterMode.setVisibility(View.GONE);
         addDancerOption.setVisibility(View.GONE);
 //        addObject.setVisibility(Button.VISIBLE);
 //        previewButton.setVisibility(Button.GONE);
     }//previewModeを押して画面の下半分をプレビュー画面にする
 
     public void addDancer(View v) {
+        previewMode.setVisibility(View.GONE);
         addDancerOption.setVisibility(LinearLayout.VISIBLE);
         objectMode.setVisibility(LinearLayout.GONE);
+        chapterMode.setVisibility(View.GONE);
     }//ADD DANCERボタンを押してダンサーのオプションを開く
 
     public void putDancer(View v) {
@@ -467,7 +499,7 @@ public class EditActivity extends AppCompatActivity {
         myView.setDancers(dancers);
 
         addDancerOption.setVisibility(LinearLayout.GONE);
-        notObjectMode.setVisibility(LinearLayout.VISIBLE);
+        previewMode.setVisibility(LinearLayout.VISIBLE);
     }//ADDボタンを押してダンサーを追加する
 
     public void musicSelect(View v) {
@@ -485,7 +517,7 @@ public class EditActivity extends AppCompatActivity {
 //            }
 //        }
 
-        Project project = new Project(dancers, projectName);
+        Project project = new Project(dancers, projectName, chapterTime);
         ObjectStrage.save(project, project.name);
         finish();
         Intent intent0 = new Intent(this, StartActivity.class);

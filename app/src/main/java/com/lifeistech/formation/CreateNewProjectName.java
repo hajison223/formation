@@ -49,7 +49,7 @@ public class CreateNewProjectName extends AppCompatActivity {
         ObjectStrage.save(nameArrayList, "project_name_array");
 
         //新規作成
-        Project project = new Project(new ArrayList<Dancer>(), text);
+        Project project = new Project(new ArrayList<Dancer>(), text,new ArrayList<Integer>());
         ObjectStrage.save(project, project.name);
 
         Intent intent = new Intent(this, EditActivity.class);

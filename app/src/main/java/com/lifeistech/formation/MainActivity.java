@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     Project project;
 
     private int maxTime;
-    List<Integer> chapterTime = new ArrayList<>(Arrays.asList(0, 30000, 50000, 226325, maxTime));
+    List<Integer> chapterTime = new ArrayList<>(Arrays.asList(0, 70000, 80000, 226325, maxTime));
 
 
     @Override
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        mainimage = (ImageView) findViewById(R.id.imageView);//一旦imageView
-//        mainimage.setImageResource(images[chapter]);
+//        mainimage.setImageResource(images[currentChapter]);
         startButton = (ImageView) findViewById(R.id.start);
         stopButton = (ImageView) findViewById(R.id.stop);
         textView = (TextView) findViewById(R.id.textView);
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         if (mTimerm == null) {
             if (chapter < maxCount) {
                 chapter = chapter + 1;
-                int time = chapterTime.get(chapter) - 1;
+                int time = chapterTime.get(chapter);
                 musicSeekBar.setProgress(time);
                 mTimem = time;
                 textView.setText(String.valueOf(mTimem));
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 mTimem = time;
                 textView.setText(String.valueOf(mTimem));
                 audioCurrentPosition = mTimem;
-//            chapter = chapter - 1;
+//            currentChapter = currentChapter - 1;
                 //audioCurrentPosition = audioCurrentPosition - 1000;
             }
         }
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         startButton.setVisibility(View.GONE);
         stopButton.setVisibility(View.VISIBLE);
 //        if (mTimer == null) {
-//            mTime = chapter;
+//            mTime = currentChapter;
 //            mTimer = new Timer(false);
 //            mTimer.schedule(new TimerTask() {
 //                @Override
@@ -155,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
 //                        @Override
 //                        public void run() {
 //                            musicSeekBar.setProgress(mTime);
-//                            //mainimage.setImageResource(images[chapter]);
-//                            //textView.setText(String.valueOf(chapter + 1));
+//                            //mainimage.setImageResource(images[currentChapter]);
+//                            //textView.setText(String.valueOf(currentChapter + 1));
 //                            mTime++;
 //                            if(mTime > audioCurrentPosition + maxTime){
 //                             stopTimer();
@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
 //                                mTime = 0;
 //                                musicSeekBar.setProgress(mTime);
 //                                mTimer.cancel();
-//                                chapter = 0;
-//                                textView.setText(String.valueOf(chapter + 1));
+//                                currentChapter = 0;
+//                                textView.setText(String.valueOf(currentChapter + 1));
 //                                mTimer = null;
 //                                startButton.setVisibility(View.VISIBLE);
 //                                stopButton.setVisibility(View.GONE);
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                         if (mTimem > chapterTime.get(chapter)) {
                             chapter = chapter + 1;
                         } else {
-//                            chapter = chapter - 1;
+//                            currentChapter = currentChapter - 1;
                         }
 
                         minuteCounter = (mTimem / 1000) / 60;
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                             musicSeekBar.setProgress(mTimem);
                             mTimerm.cancel();
                             chapter = 0;
-                            //textView.setText(String.valueOf(chapter + 1));
+                            //textView.setText(String.valueOf(currentChapter + 1));
                             mTimerm = null;
                             startButton.setVisibility(View.VISIBLE);
                             stopButton.setVisibility(View.GONE);
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
         startButton.setVisibility(View.VISIBLE);
         stopButton.setVisibility(View.GONE);
         if (mTimerm != null) {
-            //mTimem = chapter;
+            //mTimem = currentChapter;
             mTimerm.cancel();
             mTimerm = null;
         }
